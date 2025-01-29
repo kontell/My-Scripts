@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Ensure required tools are installed
-if ! command -v exiftool &> /dev/null; then
-  echo "ExifTool is not installed. Please install it and try again."
+if ! command -v exiftool &> /dev/null && ! command -v id3v2 &> /dev/null; then
+  echo "Neither ExifTool nor id3v2 is installed. Please install one of them and try again."
   exit 1
 fi
 
@@ -48,7 +48,10 @@ process_file() {
       flac)
         metaflac --remove-tag=DATE --set-tag=DATE="$original_date" "$file"
         ;;
-      mp3|m4a|wav|wma)
+      mp3)
+        id3v2 --year "$original_date" "$file"  # Use --year for mp3
+        ;;
+      m4a|wav|wma)
         exiftool -overwrite_original -Date="$original_date" "$file"
         ;;
     esac
@@ -60,6 +63,37 @@ process_file() {
     fi
   else
     echo "No ORIGINALDATE tag found in: $file"
+    
+    # Fall back to "Original Release Year" if no ORIGINALDATE
+    local release_year=""
+    if [[ "$ext" == "mp3" || "$ext" == "m4a" || "$ext" == "wma" ]]; then
+      release_year=$(exiftool -OriginalReleaseYear -s3 "$file")
+    fi
+
+    if [[ -n "$release_year" ]]; then
+      echo "Using Original Release Year as fallback: $release_year"
+      
+      # Update DATE metadata with the release year
+      case "$ext" in
+        flac)
+          metaflac --remove-tag=DATE --set-tag=DATE="$release_year" "$file"
+          ;;
+        mp3)
+          id3v2 --year "$release_year" "$file"  # Use --year for mp3
+          ;;
+        m4a|wav|wma)
+          exiftool -overwrite_original -Date="$release_year" "$file"
+          ;;
+      esac
+
+      if [[ $? -eq 0 ]]; then
+        echo "Updated DATE tag with Original Release Year for: $file"
+      else
+        echo "Failed to update DATE tag with Original Release Year for: $file"
+      fi
+    else
+      echo "No Original Release Year tag found in: $file"
+    fi
   fi
 }
 
