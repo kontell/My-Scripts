@@ -99,8 +99,5 @@ tv_grep \
    ${GUIDE_PATH}/tmp/guide.xml \
    --output ${GUIDE_PATH}/guide.xml
 
-# Refresh Nextcloud
-sudo chmod 777 ${GUIDE_PATH}/guide.xml
-sudo /snap/bin/nextcloud.occ files:scan --path="/conor/files/bluecon/docs/"
 
 
