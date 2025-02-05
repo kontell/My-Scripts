@@ -75,28 +75,28 @@ wait
 tv_merge \
    -i ${GUIDE_PATH}/guide.xml \
    -m ${GUIDE_PATH}/tmp/sky.com.sorted.xml \
-   -o ${GUIDE_PATH}/tmp/guide.xml
+   -o ${GUIDE_PATH}/guide.xml
 
 tv_merge \
    -i ${GUIDE_PATH}/guide.xml \
    -m ${GUIDE_PATH}/tmp/player.ee.co.uk.sorted.xml \
-   -o ${GUIDE_PATH}/tmp/guide.xml
+   -o ${GUIDE_PATH}/guide.xml
 
 tv_merge \
    -i ${GUIDE_PATH}/guide.xml \
    -m ${GUIDE_PATH}/tmp/dstv.com.sorted.xml \
-   -o ${GUIDE_PATH}/tmp/guide.xml
+   -o ${GUIDE_PATH}/guide.xml
 
 tv_merge \
    -i ${GUIDE_PATH}/guide.xml \
    -m ${GUIDE_PATH}/tmp/sky.co.nz.sorted.xml \
-   -o ${GUIDE_PATH}/tmp/guide.xml
+   -o ${GUIDE_PATH}/guide.xml
 
 
 # Trim programs older than 3 days
 tv_grep \
    --on-after "$CUTOFF_TIME" \
-   ${GUIDE_PATH}/tmp/guide.xml \
+   ${GUIDE_PATH}/guide.xml \
    --output ${GUIDE_PATH}/guide.xml
 
 
