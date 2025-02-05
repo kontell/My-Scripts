@@ -93,7 +93,7 @@ tv_merge \
    -o ${GUIDE_PATH}/guide.xml
 
 
-# Trim programs older than 3 days
+# Trim Old Programs
 tv_grep \
    --on-after "$CUTOFF_TIME" \
    ${GUIDE_PATH}/guide.xml \
