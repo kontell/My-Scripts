@@ -5,7 +5,7 @@ EPG_GRABBER_PATH="/home/user/epg"
 GUIDE_PATH="/media/guides"
 CUTOFF_TIME=$(date -u -d '1 day ago' +%Y%m%d%H%M%S) # Generate timestamp for guide trim (UTC)
 
-# Set number of days from argument (default to 9 if not provided)
+# Set number of days to grab from argument (default to 9 if not provided)
 DAYS=${1:-9}
 
 # Grab Sky Guide
@@ -89,7 +89,7 @@ tv_merge \
 # Reordered <display-name> to be the first child inside <channel>
 sed -i -E '/<channel id=/ {N;N; s#(<channel id="[^"]+">\n)\s*<url>(.*?)</url>\n\s*<display-name>(.*?)</display-name>#\1  <display-name>\3</display-name>\n  <url>\2</url>#}' ${GUIDE_PATH}/guide.xml
 
-# Fix indentaiton
+# Fix Indentation
 xmllint --format ${GUIDE_PATH}/guide.xml -o ${GUIDE_PATH}/guide.xml
 
 # Trim Old Programs
