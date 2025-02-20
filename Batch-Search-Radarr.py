@@ -85,8 +85,7 @@ def process_one_batch(movies):
             movie_id = movie['id']
             print(f"  - Searching for {movie['title']} (ID: {movie_id})")
             try:
-                search_result = search_movie(movie_id)
-                print(f"    Search initiated for movie ID {movie_id}: {search_result}")
+                search_movie(movie_id)  # Call the search function but don’t print the result
                 save_searched_movie(str(movie_id))
             except requests.exceptions.HTTPError as e:
                 print(f"    Error searching for movie ID {movie_id}: {e}")
