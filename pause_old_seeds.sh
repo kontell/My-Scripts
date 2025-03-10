@@ -5,7 +5,7 @@ SERVER="localhost:9091"
 USER="XXXX"
 PASS="XXXX"
 
-# Time in seconds for seed cutoff (3 days)
+# Time in seconds for seed cutoff (4 days)
 SEED_CUTOFF=$((4 * 24 * 60 * 60))
 
 # Use transmission-remote to get the list of torrents
