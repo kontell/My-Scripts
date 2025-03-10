@@ -4,9 +4,7 @@
 EPG_GRABBER_PATH="/home/user/epg"
 GUIDE_PATH="/media/guides"
 CUTOFF_TIME=$(date -u -d '1 day ago' +%Y%m%d%H%M%S) # Generate timestamp for guide trim (UTC)
-
-# Set number of days to grab from argument (default to 9 if not provided)
-DAYS=${1:-9}
+DAYS=${1:-9} # Set number of days to grab from argument (default to 9 if not provided)
 
 # Grab Sky Guide
 /usr/bin/node ${EPG_GRABBER_PATH}/node_modules/epg-grabber/bin/epg-grabber.js \
@@ -16,7 +14,6 @@ DAYS=${1:-9}
    --max-connections=5 \
    --output=${GUIDE_PATH}/tmp/{site}.xml \
    &
-
 # Grab EE Guide
 /usr/bin/node ${EPG_GRABBER_PATH}/node_modules/epg-grabber/bin/epg-grabber.js \
    --config=${EPG_GRABBER_PATH}/sites/player.ee.co.uk/player.ee.co.uk.config.js \
@@ -25,7 +22,6 @@ DAYS=${1:-9}
    --max-connections=1 \
    --output=${GUIDE_PATH}/tmp/{site}.xml \
    &
-
 # Grab DSTV Guide
 /usr/bin/node ${EPG_GRABBER_PATH}/node_modules/epg-grabber/bin/epg-grabber.js \
    --config=${EPG_GRABBER_PATH}/sites/dstv.com/dstv.com.config.js \
@@ -34,7 +30,6 @@ DAYS=${1:-9}
    --max-connections=3 \
    --output=${GUIDE_PATH}/tmp/{site}.xml \
    &
-
 # Grab Sky NZ Guide
 /usr/bin/node ${EPG_GRABBER_PATH}/node_modules/epg-grabber/bin/epg-grabber.js \
    --config=${EPG_GRABBER_PATH}/sites/sky.co.nz/sky.co.nz.config.js \
