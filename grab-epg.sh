@@ -81,10 +81,8 @@ tv_merge \
    -m ${GUIDE_PATH}/tmp/sky.co.nz.sorted.xml \
    -o ${GUIDE_PATH}/guide.xml
 
-# Reorder <display-name> to be the first child inside <channel> (otherwise tv_grep will error)
+# Reorder <display-name> to be the first child inside <channel> (otherwise tv_grep will error) & reformat
 sed -i -E '/<channel id=/ {N;N; s#(<channel id="[^"]+">\n)\s*<url>(.*?)</url>\n\s*<display-name>(.*?)</display-name>#\1  <display-name>\3</display-name>\n  <url>\2</url>#}' ${GUIDE_PATH}/guide.xml
-
-# Fix Indentation
 xmllint --format ${GUIDE_PATH}/guide.xml -o ${GUIDE_PATH}/guide.xml
 
 # Trim Old Programs
