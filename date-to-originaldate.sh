@@ -104,20 +104,52 @@ process_file() {
 
 # Process all files passed as arguments or in a directory
 if [[ $# -eq 0 ]]; then
-  echo "Usage: $0 <audio_file1> [audio_file2 ...] or $0 <directory>"
+  echo "Usage: $0 <audio_file1> [audio_file2 ...] or $0 <directory> [--days N]"
   exit 1
 fi
 
+# Check for --days argument and extract the number
+days_flag=false
+days_value=""
+for ((i=1; i<=$#; i++)); do
+  if [[ "${!i}" == "--days" ]]; then
+    days_flag=true
+    next_idx=$((i+1))
+    days_value="${!next_idx}"
+    if [[ ! "$days_value" =~ ^[0-9]+$ ]]; then
+      echo "Error: --days must be followed by a positive integer"
+      exit 1
+    fi
+    break
+  fi
+done
+
 if [[ -d "$1" ]]; then
   # Process all supported audio files in the directory
-  find "$1" -type f \( -iname "*.flac" -o -iname "*.mp3" -o -iname "*.m4a" -o -iname "*.wav" \) | while read -r file; do
-    process_file "$file"
-  done
+  if [[ "$days_flag" == true ]]; then
+    find "$1" -type f \( -iname "*.flac" -o -iname "*.mp3" -o -iname "*.m4a" -o -iname "*.wav" \) -mtime -"$days_value" | while read -r file; do
+      process_file "$file"
+    done
+  else
+    find "$1" -type f \( -iname "*.flac" -o -iname "*.mp3" -o -iname "*.m4a" -o -iname "*.wav" \) | while read -r file; do
+      process_file "$file"
+    done
+  fi
 else
   # Process individual files
   for file in "$@"; do
+    if [[ "$file" == "--days" || "$file" =~ ^[0-9]+$ && "$days_flag" == true ]]; then
+      continue
+    fi
     if [[ -f "$file" ]]; then
-      process_file "$file"
+      if [[ "$days_flag" == true ]]; then
+        # Check if file was modified in the last N days
+        if [[ $(find "$file" -mtime -"$days_value") ]]; then
+          process_file "$file"
+        fi
+      else
+        process_file "$file"
+      fi
     else
       echo "File not found: $file"
     fi
