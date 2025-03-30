@@ -4,6 +4,7 @@
 SERVER="localhost:9091"
 USER="XXXX"
 PASS="XXXX"
+IGNORE_FILE="$HOME/.torrent_ignore_list"  # File to store ignored torrent IDs
 
 # Time in seconds for seed cutoff (4 days)
 SEED_CUTOFF=$((4 * 24 * 60 * 60))
@@ -11,11 +12,21 @@ SEED_CUTOFF=$((4 * 24 * 60 * 60))
 # Use transmission-remote to get the list of torrents
 TRANSMISSION_COMMAND="transmission-remote $SERVER -n $USER:$PASS"
 
+# Create ignore file if it doesn't exist
+[ -f "$IGNORE_FILE" ] || touch "$IGNORE_FILE"
+
 # Get list of torrent IDs
 TORRENT_ID_LIST=$($TRANSMISSION_COMMAND -l | sed -e '1d;$d' | awk '{print $1}' | sed -e 's/[^0-9]*//g')
 
 # Loop through each torrent ID
 for TORRENT_ID in $TORRENT_ID_LIST; do
+    # Check if torrent is in ignore list
+    if grep -q "^${TORRENT_ID}$" "$IGNORE_FILE"; then
+        TORRENT_NAME=$($TRANSMISSION_COMMAND -t $TORRENT_ID -i | grep "Name:" | cut -d ':' -f2- | sed 's/^ //')
+        echo "Skipping ignored torrent '$TORRENT_NAME' with ID $TORRENT_ID"
+        continue
+    fi
+
     # Get the seeding time for each torrent
     SEED_TIME=$($TRANSMISSION_COMMAND -t $TORRENT_ID -i | grep "Seeding Time" | sed 's/.*(\(.*\) seconds)/\1/')
     
