@@ -12,7 +12,7 @@ Optionally add --days flag to only process files that have been modified recentl
 `bash date-to-originaldate.sh /media/music --days 1`
 
 ## grab-epg.sh
-This uses the iptv-org epg project to grab multiple epgs, merege them into a single file and trim old data.
+This uses the iptv-org epg project to grab multiple epgs, merge them into a single file and trim old data.
 
 Edit the script with the location of the epg github project you pulled along with the path to store your guide and add remove the sites/ lists of channels as required.
 
