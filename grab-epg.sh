@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Define variables
-EPG_GRABBER_PATH=/home/user/epg
-GUIDE_PATH=/media/guides
-CUTOFF_TIME=$(date -u -d '1 day ago' +%Y%m%d%H%M%S)
-DAYS=${1:-9}
+EPG_GRABBER_PATH=/home/conor/epg
+GUIDE_PATH=/media/bluecon/docs/IT/Sailing/guides
+CUTOFF_TIME=$(date -u -d '1 day ago' +%Y%m%d%H%M%S) # Generate timestamp for guide trim (UTC)
+DAYS=${1:-9} # Set number of days to grab from argument (default to 9 if not provided)
 LOCK_FILE=${GUIDE_PATH}/merge.lock
 
 # Function to process each guide
@@ -90,3 +90,6 @@ tv_grep \
     --on-after $CUTOFF_TIME \
     ${GUIDE_PATH}/guide.xml \
     --output ${GUIDE_PATH}/guide.xml
+
+# Refresh Nextcloud
+sudo /snap/bin/nextcloud.occ files:scan --path=/conor/files/bluecon/docs/IT/Sailing/guides/
