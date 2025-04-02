@@ -90,6 +90,3 @@ tv_grep \
     --on-after $CUTOFF_TIME \
     ${GUIDE_PATH}/guide.xml \
     --output ${GUIDE_PATH}/guide.xml
-
-# Refresh Nextcloud
-sudo /snap/bin/nextcloud.occ files:scan --path=/conor/files/bluecon/docs/IT/Sailing/guides/
