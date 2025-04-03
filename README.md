@@ -2,7 +2,7 @@
 
 Some random scripts
 
-## date-to-originaldate.sh
+## retardate.sh
 Musicbrainz uses the specific release date for the year/ date tags of albums. This script changes the year/ date to the original release date.
 
 Usage: `bash date-to-originaldate.sh /media/music`
