@@ -5,7 +5,7 @@ Some random scripts
 ## retardate.sh
 Musicbrainz uses the specific release date for the year/ date tags of albums. This script changes the year/ date to the original release date.
 
-Usage: `bash retardate..sh /media/music`
+Usage: `bash retardate.sh /media/music`
 
 Optionally add --days flag to only process files that have been modified recently, handy for speeding up regular jobs.
 
