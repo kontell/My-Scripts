@@ -41,6 +41,14 @@ process_guide() {
             sleep 1
         done
 
+        sed -i -E '/<channel id=/ {N;N; s#(<channel id="[^"]+">\n)\s*<url>(.*?)</url>\n\s*<display-name>(.*?)</display-name>#\1  <display-name>\3</display-name>\n  <url>\2</url>#}' ${GUIDE_PATH}/guide.xml
+
+        # Sort master guide
+        tv_sort \
+            --by-channel \
+            ${GUIDE_PATH}/guide.xml \
+            --output ${GUIDE_PATH}/guide.xml
+
         # Perform merge
         tv_merge \
             -i ${GUIDE_PATH}/guide.xml \
