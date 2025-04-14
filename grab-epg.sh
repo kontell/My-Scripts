@@ -41,6 +41,7 @@ process_guide() {
             sleep 1
         done
 
+        # Fix order of display-name
         sed -i -E '/<channel id=/ {N;N; s#(<channel id="[^"]+">\n)\s*<url>(.*?)</url>\n\s*<display-name>(.*?)</display-name>#\1  <display-name>\3</display-name>\n  <url>\2</url>#}' ${GUIDE_PATH}/guide.xml
 
         # Sort master guide
