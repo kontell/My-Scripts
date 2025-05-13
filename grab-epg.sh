@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define variables
-EPG_GRABBER_PATH=~/epg
+EPG_GRABBER_PATH=~$HOME/epg
 GUIDE_PATH=/media/guides/
 CUTOFF_TIME=$(date -u -d '1 day ago' +%Y%m%d%H%M%S) # Generate timestamp for guide trim (UTC)
 DAYS=${1:-9} # Set number of days to grab from argument (default to 9 if not provided)
