@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Define variables
-EPG_GRABBER_PATH=/home/user/epg
-GUIDE_PATH=/media/guides
+EPG_GRABBER_PATH=~/epg
+GUIDE_PATH=/media/guides/
 CUTOFF_TIME=$(date -u -d '1 day ago' +%Y%m%d%H%M%S) # Generate timestamp for guide trim (UTC)
 DAYS=${1:-9} # Set number of days to grab from argument (default to 9 if not provided)
 LOCK_FILE=${GUIDE_PATH}/merge.lock
@@ -22,17 +22,22 @@ process_guide() {
         --max-connections=$max_conn \
         --output=${GUIDE_PATH}/tmp/${site}.xml
 
-    # Fix sky.com formatting issues before sorting
-    if [ "$site" = "sky.com" ]; then
-        xmllint --format ${GUIDE_PATH}/tmp/sky.com.xml -o ${GUIDE_PATH}/tmp/sky.com.xml
-        sed -i '/<icon src=".*"\/>/d' ${GUIDE_PATH}/tmp/sky.com.xml
-    fi
+    # Format XML for readability
+    xmllint --format ${GUIDE_PATH}/tmp/${site}.xml -o ${GUIDE_PATH}/tmp/${site}.xml
+
+    # Fix icon placement and image fallback
+    python3 ${EPG_GRABBER_PATH}/xmltv-order.py \
+        ${GUIDE_PATH}/tmp/${site}.xml \
+        ${GUIDE_PATH}/tmp/${site}.fixed.xml
+
+    mv ${GUIDE_PATH}/tmp/${site}.fixed.xml ${GUIDE_PATH}/tmp/${site}.xml
 
     # Sort
     tv_sort \
         --by-channel \
         ${GUIDE_PATH}/tmp/${site}.xml \
-        --output ${GUIDE_PATH}/tmp/${site}.sorted.xml
+        --output ${GUIDE_PATH}/tmp/${site}.sorted.xml \
+        2> >(grep -v 'not expected here' >&2)
 
     # Merge with locking
     (
@@ -87,10 +92,15 @@ process_guide \
     ${EPG_GRABBER_PATH}/sites/tv24.co.uk/tv24.co.uk.channels.custom.xml \
     1 \
     &
+process_guide \
+    ${EPG_GRABBER_PATH}/sites/i.mjh.nz/i.mjh.nz.config.js \
+    ${EPG_GRABBER_PATH}/sites/i.mjh.nz/i.mjh.nz_skysportnow.channels.custom.xml \
+    1 \
+    &
 
 wait
 
-# Reorder (otherwise tv_grep will error) and format
+# Reorder (otherwise tv_grep will error) & format
 sed -i -E '/<channel id=/ {N;N; s#(<channel id="[^"]+">\n)\s*<url>(.*?)</url>\n\s*<display-name>(.*?)</display-name>#\1  <display-name>\3</display-name>\n  <url>\2</url>#}' ${GUIDE_PATH}/guide.xml
 xmllint --format ${GUIDE_PATH}/guide.xml -o ${GUIDE_PATH}/guide.xml
 
