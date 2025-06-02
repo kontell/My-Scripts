@@ -20,9 +20,6 @@ The script uses xmltv-util for merging & trimming.
 
 By default the script pulls 9 days of data but the number of days can be passed with an argument: `bash grab-epg.sh 1`
 
-## music-remove-empty-dir.sh
-Scans a music library and returns a list of directories without music files and gives an option to delete them.
-
 ## pause-old-seeds.sh
 Pauses torrents in transmission that have been seeding for a given period of time (ignore list is available)
 
