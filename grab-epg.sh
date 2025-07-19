@@ -78,23 +78,8 @@ process_guide \
     1 \
     &
 process_guide \
-    ${EPG_GRABBER_PATH}/sites/dstv.com/dstv.com.config.js \
-    ${EPG_GRABBER_PATH}/sites/dstv.com/dstv.com_za.channels.custom.xml \
-    2 \
-    &
-process_guide \
-    ${EPG_GRABBER_PATH}/sites/sky.co.nz/sky.co.nz.config.js \
-    ${EPG_GRABBER_PATH}/sites/sky.co.nz/sky.co.nz.channels.custom.xml \
-    1 \
-    &
-process_guide \
     ${EPG_GRABBER_PATH}/sites/tv24.co.uk/tv24.co.uk.config.js \
     ${EPG_GRABBER_PATH}/sites/tv24.co.uk/tv24.co.uk.channels.custom.xml \
-    1 \
-    &
-process_guide \
-    ${EPG_GRABBER_PATH}/sites/i.mjh.nz/i.mjh.nz.config.js \
-    ${EPG_GRABBER_PATH}/sites/i.mjh.nz/i.mjh.nz_skysportnow.channels.custom.xml \
     1 \
     &
 
