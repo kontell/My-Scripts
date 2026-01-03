@@ -15,7 +15,7 @@ process_guide() {
     local site=$(basename "$(dirname "$config")")
 
     # Grab
-    /usr/bin/node ${EPG_GRABBER_PATH}/node_modules/epg-grabber/bin/epg-grabber.js \
+    npx --prefix ${EPG_GRABBER_PATH} epg-grabber \
         --config=$config \
         --channels=$channels \
         --days=$DAYS \
