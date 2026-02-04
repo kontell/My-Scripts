@@ -22,9 +22,3 @@ By default the script pulls 9 days of data but the number of days can be passed 
 
 ## pause-old-seeds.sh
 Pauses torrents in transmission that have been seeding for a given period of time (ignore list is available)
-
-## searadarr_cf.py
-In Radarr films that have not met their custom format threshold do not show up in wanted/ cutoff unmet. This script triggers a batch search of films that have met their quality requirements but have not met their custom format threshold.
-
-## searadarr_wanted.py
-Triggers a batch automatic search of films in Radarr which show up in wanted/missing or wanted/cutoff unmet.
